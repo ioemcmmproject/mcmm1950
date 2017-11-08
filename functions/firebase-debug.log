@@ -1,0 +1,16 @@
+[debug] [2017-11-08T02:38:51.002Z] ----------------------------------------------------------------------
+[debug] [2017-11-08T02:38:51.004Z] Command:       /usr/local/Cellar/node/8.9.0/bin/node /usr/local/bin/firebase serve --only functions,hosting
+[debug] [2017-11-08T02:38:51.005Z] CLI Version:   3.14.0
+[debug] [2017-11-08T02:38:51.005Z] Platform:      darwin
+[debug] [2017-11-08T02:38:51.005Z] Node Version:  v8.9.0
+[debug] [2017-11-08T02:38:51.006Z] Time:          Tue Nov 07 2017 21:38:51 GMT-0500 (EST)
+[debug] [2017-11-08T02:38:51.006Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-11-08T02:38:51.022Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-11-08T02:38:51.022Z] > authorizing via signed-in user
+[debug] [2017-11-08T02:38:51.024Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/data-mcmm  
+ Tue Nov 07 2017 21:38:51 GMT-0500 (EST)
+[debug] [2017-11-08T02:38:51.592Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-08T02:38:51.593Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/data-mcmm/tokens  
+ Tue Nov 07 2017 21:38:51 GMT-0500 (EST)
+[debug] [2017-11-08T02:38:51.955Z] <<< HTTP RESPONSE 200
