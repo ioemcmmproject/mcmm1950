@@ -92,7 +92,7 @@
 
 
 
-		Select the architect
+		Select your preferred architect
 		<form action="/action_page.php">
   	<select name="cars">
     <option value="un">un</option>
@@ -104,7 +104,7 @@
 		</form>
 
 		<br>
-		Select the decades
+		Select your preferred decade
 		<form action="/action_page.php">
   	<select name="cars">
     <option value="92">92</option>
@@ -129,10 +129,15 @@
 		</form>
 
 
+		<!-- this is where the custom route stuff starts,
+		note that we should have another section before or
+		after this, on the same page, that brings the users
+		to the predetermined routes page -->
 
 
+		<p>Click the button to generate your custom route </p>
 
-		<p>Click the button to get your current coordinates. </p>
+		<!-- so this part of the code essentially generates user location -->
 
 		<button onclick="getLocation()">Try It</button>
 
@@ -142,17 +147,54 @@
 		var x = document.getElementById("demo");
 
 		function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else { 
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-}
+    	if (navigator.geolocation) {
+        	navigator.geolocation.getCurrentPosition(showPosition);
+    	} 
+		else { 
+        	x.innerHTML = "Geolocation is not supported by this browser.";
+    	}
+		}
 
 		function showPosition(position) {
-    x.innerHTML = "Latitude: " + position.coords.latitude + 
-    "<br>Longitude: " + position.coords.longitude;
+    	x.innerHTML = "Latitude: " + position.coords.latitude + 
+    	"<br>Longitude: " + position.coords.longitude;
 		}
+		//then here, before the selection algorithm starts, we need to import
+		//starting locations for each neighborhood, so lat & long
+		//that way, once the algorithm runs, we can determine which
+		//neighborhood is closest to the user
+
+		//somewhere here we should define a variable that is equal
+		//to what is written above
+
+
+		//selection algorithm
+
+		//I wrote this class here but I think we need to write it 
+		//as a middleware function inside index.js. 
+		//I'm pretty sure that if we do that, we can use this class
+		//in the same way on all pages
+		//I know we thought we didnt need routes, but we may
+		//need them to direct this hbs page to the next one?
+
+		class Structure {
+			constructor(a,b,c,d,e,f,g,h,i,j){
+				this.address_city = a;
+				this.address_number = b;
+				this.address_state = c;
+				this.address_street = d;
+				this.architect = e;
+				this.building_type = f;
+				this.characteristics_sum = g;
+				this.decade = h;
+				this.neighborhood = i;
+				this.property_address = j;
+			}
+		}
+
+
+
+
 		</script>
 
 
