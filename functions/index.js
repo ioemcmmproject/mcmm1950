@@ -24,7 +24,7 @@ app.set('view engine', 'hbs');
 app.get('/', (request, response) => {
     response.set('Cache-Control', 'public, max-age=300, s-maxage=600');
     getvalue().then(value => {
-        response.render('index', { value });
+        response.render('index', { value: JSON.stringify(value) });
     });
 });
 
