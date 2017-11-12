@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 
-<head>
+<!--<head>
 
 	<title>MCMM</title>
 
@@ -31,6 +31,38 @@
     </form>
 
 
-</body>
+</body>-->
 
+<!-- Josh's code-->
+
+<!doctype html>
+<html>
+  <head>
+    <style>
+      #map {
+        width: 400px;
+        height: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- Google Maps JS API -->
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <!-- GMaps Library -->
+    <script src="gmaps.js"></script>
+    <script>
+      /* Map Object */
+      var mapObj = new GMaps({
+        el: '#map',
+        lat: 48.857,
+        lng: 2.295
+      });
+    </script>
+
+    <!-- we have to include geocoding here to encode the locations in the array that gets sent over-->
+
+  </body>
+</html>
 </html>
