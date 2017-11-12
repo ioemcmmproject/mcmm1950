@@ -1,225 +1,225 @@
 <!doctype html>
 <html>
 
-<head>
+	<head>
 
 	<title> MCMM Routing Guide </title>
 	<link href="Style.css" rel="stylesheet" type="text/css"/>
 	<link href="stylesheet" href="../style/main.css"/>
-	<script type="text/javascript">        
+		<script type="text/javascript">        
                     
-        var jsonString = "{{value}}";
-        var jsonData = JSON.parse(jsonString.replace(/&quot;/g,'"'));   
+			var jsonString = "{{value}}";
+			var jsonData = JSON.parse(jsonString.replace(/&quot;/g,'"'));   
 
-        
+			
 
-        function narrowItAgain() { 
-            var archsChecked = whatDoWeHave();
-            var decsChecked = whatElseDoWeHave();
-            var newness = narrowList();
-            var evenNewer = [];
-
-
-            if (archsChecked.length == 0) {
-                alert("Please select at least one option per category");
-                return;
-            }
-
-            if (decsChecked.length == 0) {
-                alert("Please select at least one option per category");
-                return;
-            }
+			function narrowItAgain() { 
+				var archsChecked = whatDoWeHave();
+				var decsChecked = whatElseDoWeHave();
+				var newness = narrowList();
+				var evenNewer = [];
 
 
-            for (var i=0; i<decsChecked.length; i++) {              
-                if (decsChecked[i] == "1930") {
-                Object.entries(newness).forEach(
-                    ([key, value]) => {      
-                        if (value.decade == "93") {
-                            evenNewer.push(value);                            
-                        }
-                    });
-                }
+				if (archsChecked.length == 0) {
+					alert("Please select at least one option per category");
+					return;
+				}
 
-                if (decsChecked[i] == "1940") {
-                Object.entries(newness).forEach(
-                    ([key, value]) => {      
-                        if (value.decade == "94") {
-                            evenNewer.push(value);                            
-                        }
-                    });
-                }
-
-                if (decsChecked[i] == "1950") {
-                Object.entries(newness).forEach(
-                    ([key, value]) => {      
-                        if (value.decade == "95") {
-                            evenNewer.push(value);                            
-                        }
-                    });
-                }
-
-                if (decsChecked[i] == "1960") {
-                Object.entries(newness).forEach(
-                    ([key, value]) => {      
-                        if (value.decade == "96") {
-                            evenNewer.push(value);                            
-                        }
-                    });
-                }
-
-                if (decsChecked[i] == "1970") {
-                Object.entries(newness).forEach(
-                    ([key, value]) => {      
-                        if (value.decade == "97") {
-                            evenNewer.push(value);                            
-                        }
-                    });
-                }
-
-                if (decsChecked[i] == "1980") {
-                Object.entries(newness).forEach(
-                    ([key, value]) => {      
-                        if (value.decade == "98") {
-                            evenNewer.push(value);                            
-                        }
-                    });
-                }
-
-                if (decsChecked[i] == "1990") {
-                Object.entries(newness).forEach(
-                    ([key, value]) => {      
-                        if (value.decade == "99") {
-                            evenNewer.push(value);                            
-                        }
-                    });
-                }
-
-            }
-
-            console.log(evenNewer);  
-        }
+				if (decsChecked.length == 0) {
+					alert("Please select at least one option per category");
+					return;
+				}
 
 
+				for (var i=0; i<decsChecked.length; i++) {              
+					if (decsChecked[i] == "1930") {
+					Object.entries(newness).forEach(
+						([key, value]) => {      
+							if (value.decade == "93") {
+								evenNewer.push(value);                            
+							}
+						});
+					}
 
-        function narrowList() {
-            var archsChecked = whatDoWeHave();
-            var decsChecked = whatElseDoWeHave();
-            var newness = [];            
+					if (decsChecked[i] == "1940") {
+					Object.entries(newness).forEach(
+						([key, value]) => {      
+							if (value.decade == "94") {
+								evenNewer.push(value);                            
+							}
+						});
+					}
 
+					if (decsChecked[i] == "1950") {
+					Object.entries(newness).forEach(
+						([key, value]) => {      
+							if (value.decade == "95") {
+								evenNewer.push(value);                            
+							}
+						});
+					}
 
-            for (var i=0; i<archsChecked.length; i++) {              
-                if (archsChecked[i] == "Dow") {
-                Object.entries(jsonData).forEach(
-                    ([key, value]) => {      
-                        if (value.architect == "dow") {
-                            newness.push(value);                            
-                        }
-                    });
-                }
+					if (decsChecked[i] == "1960") {
+					Object.entries(newness).forEach(
+						([key, value]) => {      
+							if (value.decade == "96") {
+								evenNewer.push(value);                            
+							}
+						});
+					}
 
-                if (archsChecked[i] == "Warn") {
-                Object.entries(jsonData).forEach(
-                    ([key, value]) => {                       
-                        if (value.architect == "warn") {
-                            newness.push(value);                            
-                        }
-                    });
-                    
-                }
+					if (decsChecked[i] == "1970") {
+					Object.entries(newness).forEach(
+						([key, value]) => {      
+							if (value.decade == "97") {
+								evenNewer.push(value);                            
+							}
+						});
+					}
 
-                if (archsChecked[i] == "Hall") {
-                Object.entries(jsonData).forEach(
-                    ([key, value]) => {                       
-                        if (value.architect == "hall") {
-                            newness.push(value);                            
-                        }
-                    });
-                    
-                }
-                
-                if (archsChecked[i] == "Beach") {
-                Object.entries(jsonData).forEach(
-                    ([key, value]) => {                       
-                        if (value.architect == "bea") {
-                            newness.push(value);                            
-                        }
-                    });
-                }
-                
-                if (archsChecked[i] == "Schwartz") {
-                Object.entries(jsonData).forEach(
-                    ([key, value]) => {                       
-                        if (value.architect == "sch") {
-                            newness.push(value);                            
-                        }
-                    });
-                }
-                
-                if (archsChecked[i] == "Shul") {
-                Object.entries(jsonData).forEach(
-                    ([key, value]) => {                       
-                        if (value.architect == "shul") {
-                            newness.push(value);                            
-                        }
-                    });
-                } 
+					if (decsChecked[i] == "1980") {
+					Object.entries(newness).forEach(
+						([key, value]) => {      
+							if (value.decade == "98") {
+								evenNewer.push(value);                            
+							}
+						});
+					}
 
-                if (archsChecked[i] == "Good") {
-                Object.entries(jsonData).forEach(
-                    ([key, value]) => {                       
-                        if (value.architect == "good") {
-                            newness.push(value);                            
-                        }
-                    });
-                }                               
+					if (decsChecked[i] == "1990") {
+					Object.entries(newness).forEach(
+						([key, value]) => {      
+							if (value.decade == "99") {
+								evenNewer.push(value);                            
+							}
+						});
+					}
 
-            }
+				}
 
-            return newness;                                  
-        }     
+				console.log(evenNewer);  
+			}
 
 
 
-        function whatDoWeHave() {
-            var archCheckboxes = document.getElementsByName('archBox');
-            var archsChecked = [];
+			function narrowList() {
+				var archsChecked = whatDoWeHave();
+				var decsChecked = whatElseDoWeHave();
+				var newness = [];            
 
-            for (var i=0; i<archCheckboxes.length; i++) {
-                if (archCheckboxes[i].checked) {
-                    archsChecked.push(archCheckboxes[i].value);
-                }
-            }              
 
-            return archsChecked;
-        }
+				for (var i=0; i<archsChecked.length; i++) {              
+					if (archsChecked[i] == "Dow") {
+					Object.entries(jsonData).forEach(
+						([key, value]) => {      
+							if (value.architect == "dow") {
+								newness.push(value);                            
+							}
+						});
+					}
 
-        function whatElseDoWeHave() {
-            var decCheckboxes = document.getElementsByName('decBox');
-            var decsChecked = [];              
+					if (archsChecked[i] == "Warn") {
+					Object.entries(jsonData).forEach(
+						([key, value]) => {                       
+							if (value.architect == "warn") {
+								newness.push(value);                            
+							}
+						});
+						
+					}
 
-            for (var i=0; i<decCheckboxes.length; i++) {
-                if (decCheckboxes[i].checked) {
-                    decsChecked.push(decCheckboxes[i].value);
-                }
-            }
+					if (archsChecked[i] == "Hall") {
+					Object.entries(jsonData).forEach(
+						([key, value]) => {                       
+							if (value.architect == "hall") {
+								newness.push(value);                            
+							}
+						});
+						
+					}
+					
+					if (archsChecked[i] == "Beach") {
+					Object.entries(jsonData).forEach(
+						([key, value]) => {                       
+							if (value.architect == "bea") {
+								newness.push(value);                            
+							}
+						});
+					}
+					
+					if (archsChecked[i] == "Schwartz") {
+					Object.entries(jsonData).forEach(
+						([key, value]) => {                       
+							if (value.architect == "sch") {
+								newness.push(value);                            
+							}
+						});
+					}
+					
+					if (archsChecked[i] == "Shul") {
+					Object.entries(jsonData).forEach(
+						([key, value]) => {                       
+							if (value.architect == "shul") {
+								newness.push(value);                            
+							}
+						});
+					} 
 
-            return decsChecked;
-        }        
+					if (archsChecked[i] == "Good") {
+					Object.entries(jsonData).forEach(
+						([key, value]) => {                       
+							if (value.architect == "good") {
+								newness.push(value);                            
+							}
+						});
+					}                               
+
+				}
+
+				return newness;                                  
+			}     
+
+
+
+			function whatDoWeHave() {
+				var archCheckboxes = document.getElementsByName('archBox');
+				var archsChecked = [];
+
+				for (var i=0; i<archCheckboxes.length; i++) {
+					if (archCheckboxes[i].checked) {
+						archsChecked.push(archCheckboxes[i].value);
+					}
+				}              
+
+				return archsChecked;
+			}
+
+			function whatElseDoWeHave() {
+				var decCheckboxes = document.getElementsByName('decBox');
+				var decsChecked = [];              
+
+				for (var i=0; i<decCheckboxes.length; i++) {
+					if (decCheckboxes[i].checked) {
+						decsChecked.push(decCheckboxes[i].value);
+					}
+				}
+
+				return decsChecked;
+			}        
 
 
             
-    </script>
-</head>
+    	</script>
+	</head>
 	
 	<body>
 		
-		<div id="container">
-			<div id="custom">
+	<!--	<div id="container">
+			<div id="custom">-->
 
-				<h1>Create a route in Google Maps</h1>
+			<h1>Create a route in Google Maps</h1>
 
-				<form action="javascript:narrowList() & narrowItAgain()"> 
+			<form action="javascript:narrowList() & narrowItAgain()"> 
 			
 				<p>Choose a Mid-Century Modern Architect</p>
 
@@ -269,13 +269,13 @@
 
         		<input type="submit" value="Submit">
         
-    			</form>
-			</div>
+    		</form>
+			<!--	</div>
 			<div id="predetermined">
 				<p>Predetermined routes go here</p> 
 			</div>
 
-		</div>
+		</div> -->
 
 	<!--	<a href="http://www.google.com"> This is a link to google </a>
 		<br><br>
@@ -398,7 +398,6 @@
 
 
 	</body>
-
 
 
 </html>
