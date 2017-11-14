@@ -21,7 +21,7 @@ var path = require('path');
 var app = express();
 
 //CHANGES
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/../public')));
 
 app.engine('hbs', engines.handlebars);
 app.set('views', './views');
