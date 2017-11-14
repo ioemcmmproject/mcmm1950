@@ -1,11 +1,11 @@
 const functions = require('firebase-functions');
 const firebase = require('firebase-admin');
-const express = require('express');
+var express = require('express');
 const engines = require('consolidate');
 
 
 
-const firebaseApp = firebase.initializeApp(
+var firebaseApp = firebase.initializeApp(
     functions.config().firebase
 );
 
@@ -15,9 +15,14 @@ function getvalue() {
     return ref.once('value').then(snap => snap.val());
 }
 
-//we might have to move getvalue to assets as well
+//CHANGES
+var path = require('path');
 
-const app = express();
+var app = express();
+
+//CHANGES
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.engine('hbs', engines.handlebars);
 app.set('views', './views');
 app.set('view engine', 'hbs');
