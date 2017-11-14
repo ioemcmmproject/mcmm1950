@@ -35,4 +35,12 @@ app.get('/value.json', (request, response) => {
     });
 });
 
+//app.get('/value.json', (request, response) => {
+//    response.set('Cache-Control', 'public, max-age=300, s-maxage=600');
+//    getvalue().then(value => {
+//        response.json(value);
+//    });
+//});
+
+
 exports.app = functions.https.onRequest(app);
