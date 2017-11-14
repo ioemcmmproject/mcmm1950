@@ -1,9 +1,11 @@
 #container {
-    width: 100%;
+    width: 100%; 
 }
 #custom {
     width: 50%;
+    column-span: 1;
 }
 #predetermined {
-    width: 50%
+    width: 50%;
+    column-span: 2;
 }
