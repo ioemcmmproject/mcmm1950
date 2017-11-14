@@ -37,12 +37,10 @@ app.get('/value.json', (request, response) => {
     });
 });
 
-//app.get('/custom', (request, response) => {
-//    response.set('Cache-Control', 'public, max-age=300, s-maxage=600');
-//    getvalue().then(value => {
-//        response.json(value);
-//    });
-//});
+app.get('/custom', (request, response) => {
+    response.set('Cache-Control', 'public, max-age=300, s-maxage=600');
+    response.render('custom', {title: 'Custom Route Generation' });
+    });
 
 
 exports.app = functions.https.onRequest(app);
