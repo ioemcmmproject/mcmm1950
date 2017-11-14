@@ -1,13 +1,16 @@
 const functions = require('firebase-functions');
 const firebase = require('firebase-admin');
+//Change
 var express = require('express');
+//
 const engines = require('consolidate');
 
 
-
+//Change
 var firebaseApp = firebase.initializeApp(
     functions.config().firebase
 );
+//
 
 
 function getvalue() {
@@ -17,12 +20,12 @@ function getvalue() {
 
 //CHANGES
 var path = require('path');
-
 var app = express();
+//
 
 //CHANGES
 app.use(express.static(path.join(__dirname, '/../public')));
-
+//
 app.engine('hbs', engines.handlebars);
 app.set('views', './views');
 app.set('view engine', 'hbs');
