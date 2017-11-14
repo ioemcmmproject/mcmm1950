@@ -15,6 +15,8 @@ function getvalue() {
     return ref.once('value').then(snap => snap.val());
 }
 
+//we might have to move getvalue to assets as well
+
 const app = express();
 app.engine('hbs', engines.handlebars);
 app.set('views', './views');
@@ -35,7 +37,7 @@ app.get('/value.json', (request, response) => {
     });
 });
 
-//app.get('/value.json', (request, response) => {
+//app.get('/custom', (request, response) => {
 //    response.set('Cache-Control', 'public, max-age=300, s-maxage=600');
 //    getvalue().then(value => {
 //        response.json(value);
