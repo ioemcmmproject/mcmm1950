@@ -230,7 +230,86 @@
 					}
 
 					return filtered1;                                  
-				}     
+				}
+
+				function narrowByHood() { 
+					var hoodsChecked = whatHoods();
+					var filtered1 = narrowByArch();
+					var filtered2 = narrowByDec();
+					var filtered3 = [];
+
+
+					for (var i=0; i<decsChecked.length; i++) {              
+						if (decsChecked[i] == "1930") {
+							Object.entries(filtered1).forEach(
+							([key, value]) => {      
+								if (value.decade == "93") {
+									filtered2.push(value);                            
+								}
+							});
+						}
+						if (decsChecked[i] == "1940") {
+							Object.entries(filtered1).forEach(
+							([key, value]) => {      
+								if (value.decade == "94") {
+									filtered2.push(value);                            
+								}
+							});
+						}
+						if (decsChecked[i] == "1950") {
+							Object.entries(filtered1).forEach(
+							([key, value]) => {      
+								if (value.decade == "95") {
+									filtered2.push(value);                            
+								}
+							});
+						}
+						if (decsChecked[i] == "1960") {
+							Object.entries(filtered1).forEach(
+							([key, value]) => {      
+								if (value.decade == "96") {
+									filtered2.push(value);                            
+								}
+							});
+						}
+						if (decsChecked[i] == "1970") {
+							Object.entries(filtered1).forEach(
+							([key, value]) => {      
+								if (value.decade == "97") {
+									filtered2.push(value);                            
+								}
+							});
+						}
+						if (decsChecked[i] == "1980") {
+							Object.entries(filtered1).forEach(
+							([key, value]) => {      
+								if (value.decade == "98") {
+									filtered2.push(value);                            
+								}
+							});
+						}
+						if (decsChecked[i] == "1990") {
+							Object.entries(filtered1).forEach(
+							([key, value]) => {      
+								if (value.decade == "99") {
+									filtered2.push(value);                            
+								}
+							});
+						}
+						if (decsChecked[i] == "Any") {
+							Object.entries(filtered1).forEach(
+								([key, value]) => {
+									if ((value.decade == "99")||(value.decade == "98")||(value.decade == "97")||(value.decade == "96")||(value.decade == "95")||(value.decade == "94")||(value.decade == "93")) {
+										filtered2.push(value);
+									}
+								}
+							)
+						}
+					}
+
+					return filtered2;
+				}
+  
 
 
 
@@ -260,7 +339,18 @@
 					return decsChecked;
 				}     
 
-				function  
+				function whatHoods() {
+					var neighborhoodBoxes = document.getElementsByName('hoodBox');
+					var hoodsChecked = [];
+
+					for (var i=0; i<neighborhoodBoxes.length; i++) {
+						if (neighborhoodBoxes[i].checked) {
+							hoodsChecked.push(neighborhoodBoxes[i].value);
+						}
+					}
+					return hoodsChecked;
+				}
+
 		</script>
 		
 	</head>
