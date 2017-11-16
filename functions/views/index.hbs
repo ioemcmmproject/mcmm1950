@@ -239,75 +239,67 @@
 					var filtered3 = [];
 
 
-					for (var i=0; i<decsChecked.length; i++) {              
-						if (decsChecked[i] == "1930") {
-							Object.entries(filtered1).forEach(
+					for (var i=0; i<hoodsChecked.length; i++) {              
+						if (hoodsChecked[i] == "1") {
+							Object.entries(filtered2).forEach(
 							([key, value]) => {      
-								if (value.decade == "93") {
-									filtered2.push(value);                            
+								if (value.neighborhood == "1") {
+									filtered3.push(value);                            
 								}
 							});
 						}
-						if (decsChecked[i] == "1940") {
-							Object.entries(filtered1).forEach(
+						if (hoodsChecked[i] == "2") {
+							Object.entries(filtered2).forEach(
 							([key, value]) => {      
-								if (value.decade == "94") {
-									filtered2.push(value);                            
+								if (value.neighborhood == "2") {
+									filtered3.push(value);                            
 								}
 							});
 						}
-						if (decsChecked[i] == "1950") {
-							Object.entries(filtered1).forEach(
+						if (hoodsChecked[i] == "3") {
+							Object.entries(filtered2).forEach(
 							([key, value]) => {      
-								if (value.decade == "95") {
-									filtered2.push(value);                            
+								if (value.neighborhood == "3") {
+									filtered3.push(value);                            
 								}
 							});
 						}
-						if (decsChecked[i] == "1960") {
-							Object.entries(filtered1).forEach(
+						if (hoodsChecked[i] == "4") {
+							Object.entries(filtered2).forEach(
 							([key, value]) => {      
-								if (value.decade == "96") {
-									filtered2.push(value);                            
+								if (value.neighborhood == "4") {
+									filtered3.push(value);                            
 								}
 							});
 						}
-						if (decsChecked[i] == "1970") {
-							Object.entries(filtered1).forEach(
+						if (hoodsChecked[i] == "5") {
+							Object.entries(filtered2).forEach(
 							([key, value]) => {      
-								if (value.decade == "97") {
-									filtered2.push(value);                            
+								if (value.neighborhood == "5") {
+									filtered3.push(value);                            
 								}
 							});
 						}
-						if (decsChecked[i] == "1980") {
-							Object.entries(filtered1).forEach(
+						if (hoodsChecked[i] == "6") {
+							Object.entries(filtered2).forEach(
 							([key, value]) => {      
-								if (value.decade == "98") {
-									filtered2.push(value);                            
-								}
-							});
-						}
-						if (decsChecked[i] == "1990") {
-							Object.entries(filtered1).forEach(
-							([key, value]) => {      
-								if (value.decade == "99") {
-									filtered2.push(value);                            
+								if (value.neighborhood == "6") {
+									filtered3.push(value);                            
 								}
 							});
 						}
 						if (decsChecked[i] == "Any") {
 							Object.entries(filtered1).forEach(
 								([key, value]) => {
-									if ((value.decade == "99")||(value.decade == "98")||(value.decade == "97")||(value.decade == "96")||(value.decade == "95")||(value.decade == "94")||(value.decade == "93")) {
-										filtered2.push(value);
+									if ((value.neighborhood == "1")||(value.neighborhood == "3")||(value.neighborhood == "3")||(value.neighborhood == "4")||(value.neighborhood == "5")||(value.neighborhood == "6")) {
+										filtered3.push(value);
 									}
 								}
 							)
 						}
 					}
 
-					return filtered2;
+					return filtered3;
 				}
   
 
@@ -434,7 +426,11 @@
 				<br>
 
 				<input type="checkbox" name="hoodBox" value="1"> 6
+				<br>
+
+				<input type="checkbox" name="hoodBox" value="Any"> Any Neighborhood
 				<br><br>
+
 				<INPUT TYPE ="hidden" NAME="redirect" VALUE="custom.hbs">
         		<input type="submit" value="Submit">
         
