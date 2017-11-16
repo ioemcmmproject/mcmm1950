@@ -354,7 +354,7 @@
 
 			<h1>Create a route in Google Maps</h1>
 
-			<form action="javascript:narrowByArch() & narrowByDec() & orderList()"> 
+			<form id="custom_routes" action="javascript:narrowByArch() & narrowByDec() & orderList()"> 
 			
 				<p>Choose a Mid-Century Modern Architect</p>
 
@@ -431,8 +431,7 @@
 				<input type="checkbox" name="hoodBox" value="Any"> Any Neighborhood
 				<br><br>
 
-				<INPUT TYPE ="hidden" NAME="redirect" VALUE="custom.hbs">
-        		<input type="submit" value="Submit">
+				<a href="javascript:{}" onclick="document.getElementById('custom_routes').submit;">Submit</a>
         
     		</form>
 			</div>
