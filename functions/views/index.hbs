@@ -138,7 +138,13 @@
 							});
 						}
 						if (decsChecked[i] == "Any") {
-							Object.entries(filtered1).forEach()
+							Object.entries(filtered1).forEach(
+								([key, value]) => {
+									if ((value.decade == "99")||(value.decade == "98")||(value.decade == "97")||(value.decade == "96")||(value.decade == "95")||(value.decade == "94")||(value.decade == "93")) {
+										filtered2.push(value);
+									}
+								}
+							)
 						}
 					}
 
@@ -211,7 +217,16 @@
 									filtered1.push(value);                            
 								}
 							});
-						}                               
+						} 
+						if (archsChecked[i] == "Any") {
+							Object.entries(jsonData).forEach(
+								([key, value]) => {
+									if ((value.architect == "99")||(value.architect == "98")||(value.architect == "97")||(value.architect == "96")||(value.architect == "95")||(value.architect == "94")||(value.architect == "93")) {
+										filtered1.push(value);
+									}
+								}
+							)
+						}                              
 					}
 
 					return filtered1;                                  
@@ -306,8 +321,28 @@
         		<input type="checkbox" name="decBox" value="1990"> 1990's
 				<br>
 				
-				<input type="checkbox" name="decBox" value="any"> Any Decade
-        		<br><br>
+				<input type="checkbox" name="decBox" value="Any"> Any Decade
+				<br>
+			
+				<p>Neighborhood (see map below for description)</p>    
+
+				<input type="checkbox" name="hoodBox" value="1"> 1
+				<br>
+
+				<input type="checkbox" name="hoodBox" value="2"> 2
+				<br>
+
+				<input type="checkbox" name="hoodBox" value="1"> 3
+				<br>
+
+				<input type="checkbox" name="hoodBox" value="1"> 4
+				<br>
+
+				<input type="checkbox" name="hoodBox" value="1"> 5
+				<br>
+
+				<input type="checkbox" name="hoodBox" value="1"> 6
+				<br><br>
 				<INPUT TYPE ="hidden" NAME="redirect" VALUE="custom.hbs">
         		<input type="submit" value="Submit">
         

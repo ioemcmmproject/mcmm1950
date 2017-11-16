@@ -50,5 +50,10 @@ app.get('/custom', (request, response) => {
     response.render('custom', {title: 'Custom Route Generation' });
 });
 
+app.get('/maps', (request, response) => {
+    response.set('Cache-Control', 'public, max-age=300, s-maxage=600');
+    response.render('maps');
+});
+
 
 exports.app = functions.https.onRequest(app);
