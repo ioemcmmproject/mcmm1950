@@ -1,10 +1,400 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html>
-	<head> 
-		<title> Custom Page </title>
-	</head>
-	<body>
-		<p>Hello</p>
-	</body>
-		
+    <head>
+    
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+        <meta charset="utf-8">
+        <title>Map MCMM</title>
+        <link rel="stylesheet" type ="text/css" href="css/main.css"/>
+    </head>
+    <body>
+        
+        <div id="map"></div>
+        <div id="right-panel">
+        
+            <div>
+                <form action="javascript: narrowByType() & orderTypeList() & createOptions()">
+                    <input type="checkbox" name="typeBox" value="public"> Public <br>
+                    <input type="checkbox" name="typeBox" value="religious"> Religious <br>
+                    <input type="checkbox" name="typeBox" value="educational"> Educational <br>
+                    <input type="checkbox" name="typeBox" value="commercial"> Commercial/Industrial <br>
+                    <input type="checkbox" name="typeBox" value="residential"> Residential <br>
+                    <input type="submit" value="Narrow by Structure Type"> <br>
+                </form>
+
+                <select multiple id="start-end"> 
+                    <option id="start">Start Location:</option>
+                    <option id="end"></option>
+                </select> <br>
+                
+                <i>Shift+Click for multiple selection</i> <br>
+                <i>Ctrl+Click or Cmd+Click for single selection</i> <br>
+                <select multiple id="waypoints">
+
+                </select> <br>
+
+                <input type="submit" id="submit">
+
+                <br><br><br><br>
+                <b>Open route in Google Maps</b> <br>
+                <form action="javascript: openMaps()">
+                    <input type="submit" href="" id="openMaps" disabled="disabled" value="Click to Open"> <br>
+                </form>
+
+            </div>
+
+        </div>
+
+
+
+        <script>
+            document.getElementById("start").value = myArray[0].property_address + ", Midland, MI";
+            document.getElementById("end").value = myArray[0].property_address + ", Midland, MI";
+            document.getElementById("end").innerHTML = myArray[0].property_address;
+            
+            console.log(document.getElementById('start').value);
+
+            var newArray = [];
+            Object.entries(myArray).forEach(
+            ([key, value]) => { 
+                newArray.push(value);
+            });
+
+            delete myArray[0];  
+            var select = document.getElementById('waypoints');
+            Object.entries(myArray).forEach(
+            ([key, value]) => { 
+                var opt = document.createElement('option');         
+                opt.value = value.property_address + ", Midland, MI";
+                
+                if (value.year_built != "") {
+                    opt.innerHTML = value.property_address + ", " + value.year_built;
+                }
+                else {
+                    opt.innerHTML = value.property_address
+                }
+                select.appendChild(opt);  
+            });
+
+            console.log(newArray);
+            console.log(num);
+
+
+            function openMaps() {
+                var link = document.getElementById("openMaps").href;
+                window.open(link);
+            }
+
+            function initMap() {
+                var directionsService = new google.maps.DirectionsService;
+                var directionsDisplay = new google.maps.DirectionsRenderer;
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 12,
+                    center: {lat: 43.618183, lng: -84.234238}
+                });
+                directionsDisplay.setMap(map);
+
+                document.getElementById('submit').addEventListener('click', function() {
+                    calculateAndDisplayRoute(directionsService, directionsDisplay);
+                });
+            }
+
+            function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+                var waypts = [];
+                var checkboxArray = document.getElementById('waypoints');
+                for (var i = 0; i < checkboxArray.length; i++) {
+                    if (checkboxArray.options[i].selected) {
+                        waypts.push({
+                        location: checkboxArray[i].value,
+                        stopover: true
+                        });
+                    }
+                }
+
+                directionsService.route({
+                    origin: document.getElementById('start').value,
+                    destination: document.getElementById('end').value,
+                    waypoints: waypts,
+                    optimizeWaypoints: true,
+                    travelMode: 'DRIVING'
+                }, function(response, status) {
+                if (status === 'OK') {
+                    directionsDisplay.setDirections(response);
+                    var route = response.routes[0];                   
+                    var link = "https://www.google.com/maps/dir/";
+                    
+                    for (var i = 0; i < route.legs.length; i++) {
+                        link += route.legs[i].start_address;
+                    }
+
+                    var edit1 = link.replace(/, USA/g, "/");
+                    var edit2 = edit1.replace(/, /g, "+");
+                    var edit3 = edit2.replace(/\s/g, "+");
+                         
+                    document.getElementById('openMaps').removeAttribute('disabled');
+                    document.getElementById("openMaps").href = edit3;
+
+                } else {
+                    window.alert('Unable to calculate route due to ' + status);
+                }
+                });
+            }
+
+
+            
+
+            function createOptions() {
+                var orderedList = orderTypeList();
+
+                document.getElementById("start").value = orderedList[0].property_address + ", Midland, MI";
+                document.getElementById("end").value = orderedList[0].property_address + ", Midland, MI";
+                document.getElementById("end").innerHTML = orderedList[0].property_address;
+                
+                console.log(document.getElementById('start').value);
+
+                delete orderedList[0];  
+                var select = document.getElementById('waypoints');
+                Object.entries(orderedList).forEach(
+                ([key, value]) => { 
+                    var opt = document.createElement('option');         
+                    opt.value = value.property_address + ", Midland, MI";
+                    
+                    if (value.year_built != "") {
+                        opt.innerHTML = value.property_address + ", " + value.year_built;
+                    }
+                    else {
+                        opt.innerHTML = value.property_address
+                    }
+                    select.appendChild(opt);  
+                });
+            }
+
+
+            function orderTypeList() {
+                var combined = narrowByType();
+                var char = ["6", "5", "4", "3", "2", "1", "0"];
+                var pub = [];
+                var edu = [];
+                var rel = [];
+                var com = [];
+                var erel = [];
+                var ce = [];
+                var cres = [];
+                var res = [];
+                var un = [];
+                var orderedList = [];
+
+                
+                Object.entries(combined).forEach(
+                ([key, value]) => {      
+                    if (value.building_type == "Public" || value.building_type == "cp" || value.building_type == "ep") { pub.push(value); } 
+                    if (value.building_type == "Religious") { rel.push(value); }
+                    if (value.building_type == "Educational") { edu.push(value); }
+                    if (value.building_type == "erel") { erel.push(value); }
+                    if (value.building_type == "Commercial/Industrial") { com.push(value); }      
+                    if (value.building_type == "ce") { ce.push(value); }
+                    if (value.building_type == "cres") { cres.push(value); }    
+                    if (value.building_type == "Residential") { res.push(value); }       
+                    if (value.building_type == "") { un.push(value); }
+                });
+
+
+                for (var i=0; i<char.length; i++) {
+                    Object.entries(pub).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
+                }
+                for (var i=0; i<char.length; i++) {
+                    Object.entries(rel).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
+                }
+                for (var i=0; i<char.length; i++) {
+                    Object.entries(edu).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
+                }
+                for (var i=0; i<char.length; i++) {
+                    Object.entries(com).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
+                }
+                for (var i=0; i<char.length; i++) {
+                    Object.entries(erel).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
+                }
+                for (var i=0; i<char.length; i++) {
+                    Object.entries(ce).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
+                }
+                for (var i=0; i<char.length; i++) {
+                    Object.entries(cres).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
+                }
+                for (var i=0; i<char.length; i++) {
+                    Object.entries(res).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
+                }
+                for (var i=0; i<char.length; i++) {
+                    Object.entries(un).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
+                }
+                
+                return orderedList;
+            }
+
+
+
+            function narrowByType() { 
+                var typesChecked = whatTypes();
+                var filtered1 = [];
+                var twoTypes = [];
+                var combined = [];
+                var ce, ep, erel, cp, cres;
+
+
+                for (var i=0; i<typesChecked.length; i++) {
+                    if (typesChecked[i] == "educational") {
+                        for (var j=0; j<typesChecked.length; j++) {
+                            if (typesChecked[j] == "commercial") {
+                                Object.entries(newArray).forEach( ([key, value]) => { if (value.building_type == "ce") { twoTypes.push(value); } });
+                                ce = true;        
+                            }
+                            if (typesChecked[j] == "public") {
+                                Object.entries(newArray).forEach( ([key, value]) => { if (value.building_type == "ep") { twoTypes.push(value); } });
+                                ep = true;       
+                            }
+                            if (typesChecked[j] == "religious") {
+                                Object.entries(newArray).forEach( ([key, value]) => { if (value.building_type == "erel") { twoTypes.push(value); } });
+                                erel = true;        
+                            }
+                        }
+                    }
+                    if (typesChecked[i] == "commercial") {
+                        for (var j=0; j<typesChecked.length; j++) {
+                            if (typesChecked[j] == "public") {
+                                Object.entries(newArray).forEach( ([key, value]) => { if (value.building_type == "cp") { twoTypes.push(value); } });
+                                cp = true;       
+                            }
+                            if (typesChecked[j] == "residential") {
+                                Object.entries(newArray).forEach( ([key, value]) => { if (value.building_type == "cres") { twoTypes.push(value); } });
+                                cres = true;                              
+                            }
+                        }
+                    }               
+                }
+
+
+                for (var i=0; i<typesChecked.length; i++) {
+                    if (typesChecked[i] == "residential") {
+                        Object.entries(newArray).forEach(
+                        ([key, value]) => {      
+                            if (value.building_type == "Residential") {
+                                filtered1.push(value);                            
+                            }
+                        });
+
+
+                        if (cres != true) { 
+                            Object.entries(newArray).forEach( ([key, value]) => { if (value.building_type == "cres") { filtered1.push(value); } });
+                        }
+                    }
+
+                    if (typesChecked[i] == "public") {
+                        Object.entries(newArray).forEach(
+                        ([key, value]) => {      
+                            if (value.building_type == "Public") {
+                                filtered1.push(value);                           
+                            }    
+                        });
+
+
+                        if (ep != true) {
+                            Object.entries(newArray).forEach( ([key, value]) => { if (value.building_type == "ep") { filtered1.push(value); } });
+                        }
+                        if (cp != true) {
+                            Object.entries(newArray).forEach( ([key, value]) => { if (value.building_type == "cp") { filtered1.push(value); } });
+                        }
+                    }
+
+                    if (typesChecked[i] == "religious") {
+                        Object.entries(newArray).forEach(
+                        ([key, value]) => {      
+                            if (value.building_type == "Religious") {
+                                filtered1.push(value);                            
+                            }
+                        });
+
+
+                        if (erel != true) {
+                            Object.entries(newArray).forEach( ([key, value]) => { if (value.building_type == "erel") { filtered1.push(value); }});
+                        }
+                    }
+
+                    if (typesChecked[i] == "educational") {
+                        Object.entries(newArray).forEach(
+                        ([key, value]) => {      
+                            if (value.building_type == "Educational") {
+                                filtered1.push(value);                            
+                            }
+                        });
+
+
+                        if (ep != true) {
+                            Object.entries(newArray).forEach( ([key, value]) => { if (value.building_type == "ep") { filtered1.push(value); } });
+                        }
+                        if (ce != true) {
+                            Object.entries(newArray).forEach( ([key, value]) => { if (value.building_type == "ce") { filtered1.push(value); } });
+                        }
+                        if (erel != true) {
+                            Object.entries(newArray).forEach( ([key, value]) => { if (value.building_type == "erel") { filtered1.push(value); } });
+                        }
+                    }
+
+                    if (typesChecked[i] == "commercial") {
+                        Object.entries(newArray).forEach(
+                        ([key, value]) => {      
+                            if (value.building_type == "Commercial/Industrial") {
+                                filtered1.push(value);                            
+                            }
+                        });
+
+
+                        if (cp != true) {
+                            Object.entries(newArray).forEach( ([key, value]) => { if (value.building_type == "cp") { filtered1.push(value); } });
+                        }
+                        if (ce != true) {
+                            Object.entries(newArray).forEach( ([key, value]) => { if (value.building_type == "ce") { filtered1.push(value); } });
+                        }
+                        if (cres != true) {
+                            Object.entries(newArray).forEach( ([key, value]) => { if (value.building_type == "cres") { filtered1.push(value); } });
+                        }
+                    }               
+                }
+
+                Object.entries(filtered1).forEach( ([key, value]) => { combined.push(value); });
+                Object.entries(twoTypes).forEach( ([key, value]) => { combined.push(value); });
+                return combined;
+            }
+
+
+            function whatTypes() {
+                function removeOptions(selectbox) {
+                    var i;
+                    for(i = selectbox.options.length - 1 ; i >= 0 ; i--)
+                    {
+                        selectbox.remove(i);
+                    }
+                }
+                
+                removeOptions(document.getElementById("waypoints"));
+                
+
+                var typeCheckboxes = document.getElementsByName('typeBox');
+                var typesChecked = [];              
+
+                for (var i=0; i<typeCheckboxes.length; i++) {
+                    if (typeCheckboxes[i].checked) {
+                        typesChecked.push(typeCheckboxes[i].value);
+                    }
+                }
+
+                
+                return typesChecked;
+                
+            }
+
+        </script>
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9WMAfWIu0tussXJh597nBxbR7_BoTNKI&callback=initMap">
+        </script>
+    </body>
 </html>
