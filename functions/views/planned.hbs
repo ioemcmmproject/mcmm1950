@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+    
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+        <meta charset="utf-8">
+        <title>Map MCMM</title>
+        <link rel="stylesheet" type ="text/css" href="css/planned.css"/>
+    </head>
+    <body>
+        
+        <div id="map"></div>
+        <div id="right-panel">
+        
+            <div>
+                <input type="radio" name="plan" value="Apple"> Applewood <br>
+                <input type="radio" name="plan" value="Vall"> Valley <br>
+                <input type="radio" name="plan" value="Cresc"> Crescent <br>
+                <input type="submit" id="submit"> <br>
+
+                <br><br><br><br>
+                <b>Open route in Google Maps</b> <br>
+                <form action="javascript: openMaps()">
+                    <input type="submit" href="" id="openMaps" disabled="disabled" value="Click to Open"> <br>
+                </form>
+                
+
+            </div>
+
+        </div>
+
+
+
+
+        <script>
+
+            function openMaps() {
+                var link = document.getElementById("openMaps").href;
+                window.open(link);
+            }
+
+            function initMap() {
+                var directionsService = new google.maps.DirectionsService;
+                var directionsDisplay = new google.maps.DirectionsRenderer;
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 12,
+                    center: {lat: 43.618183, lng: -84.234238}
+                });
+                directionsDisplay.setMap(map);
+
+                document.getElementById('submit').addEventListener('click', function() {
+                    calculateAndDisplayRoute(directionsService, directionsDisplay);
+                });
+            }
+            
+            function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+                var fullString = createPlan();
+                var waypts = [];
+
+                for (var i = 1; i < fullString.length - 1; i++) {
+                    waypts.push({
+                    location: fullString[i],
+                    stopover: true
+                    });
+                }
+
+                directionsService.route({
+                    origin: fullString[0],
+                    destination: fullString[fullString.length - 1],
+                    waypoints: waypts,
+                    optimizeWaypoints: true,
+                    travelMode: 'DRIVING'
+                }, function(response, status) {
+                if (status === 'OK') {
+                    directionsDisplay.setDirections(response);
+                    var route = response.routes[0];                   
+                    var link = "https://www.google.com/maps/dir/";
+                    
+                    for (var i = 0; i < route.legs.length; i++) {
+                        link += route.legs[i].start_address;
+                    }
+
+                    link += route.legs[route.legs.length - 1].end_address;
+
+                    var edit1 = link.replace(/, USA/g, "/");
+                    var edit2 = edit1.replace(/, /g, "+");
+                    var edit3 = edit2.replace(/\s/g, "+");
+
+                    document.getElementById('openMaps').removeAttribute('disabled');
+                    document.getElementById("openMaps").href = edit3;   
+                } else {
+                    window.alert('Unable to calculate route due to ' + status);
+                }
+                });
+            }
+
+            function createPlan() {
+                var whatPlan = getPlan();
+                var apple = ["3108", "3200", "3205", "3300", "3400", "3410", "3418", "3419", "3711", "3812"],
+                    valley = ["3124", "3210", "3211", "3302", "3315", "3403", "3411", "3600", "3610", "3701", "3716", "3802", "3811", "3900", "3909"],
+                    crescent = ["1413", "809", "912", "801", "717", "713", "612", "604", "1208",  "1300",  "512"],
+                    fullString = [];
+                
+                if (whatPlan == "Apple") {
+                    for (i=0; i<apple.length; i++) {
+                        fullString.push(apple[i] + " Applewood, Midland, MI")
+                    }
+                }
+                if (whatPlan == "Vall") {
+                    for (i=0; i<valley.length; i++) {
+                        fullString.push(valley[i] + " Valley, Midland, MI")
+                    }
+                }
+                if (whatPlan == "Cresc") {
+                    for (i=0; i<crescent.length; i++) {
+                        fullString.push(crescent[i] + " Crescent, Midland, MI")
+                    }
+                }
+
+                return fullString;   
+            }
+
+            
+            function getPlan() {
+                var planSelected = document.getElementsByName('plan');
+                var whatPlan = [];
+
+                for (var i=0; i<planSelected.length; i++) {
+                    if (planSelected[i].checked) {
+                        whatPlan.push(planSelected[i].value);
+                    }
+                }
+
+                return whatPlan;
+            }
+
+        </script>
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9WMAfWIu0tussXJh597nBxbR7_BoTNKI&callback=initMap">
+        </script>
+    </body>
+</html>

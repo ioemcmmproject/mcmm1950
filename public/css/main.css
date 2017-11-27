@@ -15,3 +15,9 @@ body {
     overflow-x:scroll;
     border: 1px solid;
 }
+form {
+    font-size: 18px;
+    height: 48px;
+    width: 100%;
+    color: rgba(0,0,0, 0.90);  
+}
