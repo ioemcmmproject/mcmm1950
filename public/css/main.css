@@ -1,3 +1,17 @@
-p {
-    color: blue;
+body {
+    background-color: #C6E0F8;
+    font-family: 'Roboto', Arial, sans-serif;
+}
+
+#one {
+    font-size: 18px;
+    width: 100%;
+    color: rgba(0,0,0, 0.90);  
+}
+
+#scrollbox {
+    height:85px;
+    width: 248px;
+    overflow-x:scroll;
+    border: 1px solid;
 }
