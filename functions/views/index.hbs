@@ -9,7 +9,7 @@
 	<link rel="stylesheet" type ="text/css" href="css/main.css"/>
 
     <script type="text/javascript">                         
-        var jsonString = "{{value}}";
+       var jsonString = "{{value}}";
         var getData = JSON.parse(jsonString.replace(/&quot;/g,'"'));
         var jsonData = [];   
 
@@ -20,25 +20,12 @@
             }
         });
         
-        
-        function openPlanned() {
-            window.open("/planned");
-        }
 
 
         function sendArray() {
             var orderedList = orderList();
             var archsChecked = whatArchitects();
             var decsChecked = whatDecades();
-            
-            var numSelected = document.getElementsByName('numToRoute');
-            var numArray = [];
-
-            for (var i=0; i<numSelected.length; i++) {
-                if (numSelected[i].checked) {
-                    numArray.push(numSelected[i].value);
-                }
-            }
 
             if (archsChecked.length == 0) {
                 alert("Please select at least one option per category");
@@ -50,77 +37,72 @@
                 return;
             }
 
-            else if (numArray.length == 0) {
-                alert("Please select at least one option per category");
+            else if (orderedList.length == 0) {
+                alert("No Results: Please select more options");
                 return;
             }
 
             else {
                 var w = window.open("/custom");
                 w.myArray = orderedList;
-                w.num = numArray;
             }
          
         }
 
+
         function orderList() {
             var filtered2 = narrowByDec();
+            var order1 = [];
+            var order2 = [];
+            var order3 = [];
+            var type;
+            var pub = 0;
             var char = ["6", "5", "4", "3", "2", "1", "0"];
-            var pub = [];
-            var edu = [];
-            var rel = [];
-            var com = [];
-            var erel = [];
-            var ce = [];
-            var cres = [];
-            var res = [];
-            var un = [];
-            var orderedList = [];
+            var num = ["6", "3", "2", "5", "4", "1", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"];
 
-               
-            Object.entries(filtered2).forEach(
-            ([key, value]) => {      
-                if (value.building_type == "Public" || value.building_type == "cp" || value.building_type == "ep") { pub.push(value); } 
-                if (value.building_type == "Religious") { rel.push(value); }
-                if (value.building_type == "Educational") { edu.push(value); }
-                if (value.building_type == "Commercial/Industrial") { com.push(value); }
-                if (value.building_type == "erel") { erel.push(value); }      
-                if (value.building_type == "ce") { ce.push(value); }
-                if (value.building_type == "cres") { cres.push(value); }    
-                if (value.building_type == "Residential") { res.push(value); }       
-                if (value.building_type == "") { un.push(value); }
-            });
+            for (i=0; i<filtered2.length; i++) {
+                if (filtered2[i].building_type == "Public") { 
+                    pub = pub + 1; 
+                }
+            }
+
+            if (pub != 0) {
+                type = ["Public", "Public and Comm/Ind", "Public and Edu", "Religious", "Religious and Edu", "Educational", "Commercial/Industrial", "Edu and Comm/Ind", "Comm/Ind and Residential", "Residential", ""];
+            }
+
+            else {
+                type = ["Religious", "Religious and Edu", "Educational", "Public and Edu", "Commercial/Industrial", "Edu and Comm/Ind", "Public and Comm/Ind", "Comm/Ind and Residential", "Residential", ""];
+            }
 
 
-            for (var i=0; i<char.length; i++) {
-                Object.entries(pub).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
-            }
-            for (var i=0; i<char.length; i++) {
-                Object.entries(rel).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
-            }
-            for (var i=0; i<char.length; i++) {
-                Object.entries(edu).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
-            }
-            for (var i=0; i<char.length; i++) {
-                Object.entries(com).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
-            }
-            for (var i=0; i<char.length; i++) {
-                Object.entries(erel).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
-            }
-            for (var i=0; i<char.length; i++) {
-                Object.entries(ce).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
-            }
-            for (var i=0; i<char.length; i++) {
-                Object.entries(cres).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
-            }
-            for (var i=0; i<char.length; i++) {
-                Object.entries(res).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
-            }
-            for (var i=0; i<char.length; i++) {
-                Object.entries(un).forEach( ([key, value]) => { if (value.characteristics_sum == char[i]) { orderedList.push(value); } });
-            }
+            for (var i=0; i<char.length; i++) {                     
+                Object.entries(filtered2).forEach(
+                ([key, value]) => {      
+                    if (value.characteristics_sum == char[i]) {
+                        order1.push(value);                            
+                    }
+                });                                              
+            } 
             
-            return orderedList;
+            for (var i=0; i<type.length; i++) {                     
+                Object.entries(order1).forEach(
+                ([key, value]) => {      
+                    if (value.building_type == type[i]) {
+                        order2.push(value);                            
+                    }
+                });                                              
+            }
+
+            for (var i=0; i<num.length; i++) {                     
+                Object.entries(order2).forEach(
+                ([key, value]) => {      
+                    if (value.neighborhood == num[i]) {
+                        order3.push(value);                            
+                    }
+                });                                              
+            }
+
+            return order3;
         }
 
 
@@ -131,198 +113,29 @@
 
 
             for (var i=0; i<decsChecked.length; i++) {              
-                if (decsChecked[i] == "1930") {
-                    Object.entries(filtered1).forEach(
-                    ([key, value]) => {      
-                        if (value.decade == "93") {
-                            filtered2.push(value);                            
-                        }
-                    });
-                }
-                if (decsChecked[i] == "1940") {
-                    Object.entries(filtered1).forEach(
-                    ([key, value]) => {      
-                        if (value.decade == "94") {
-                            filtered2.push(value);                            
-                        }
-                    });
-                }
-                if (decsChecked[i] == "1950") {
-                    Object.entries(filtered1).forEach(
-                    ([key, value]) => {      
-                        if (value.decade == "95") {
-                            filtered2.push(value);                            
-                        }
-                    });
-                }
-                if (decsChecked[i] == "1960") {
-                    Object.entries(filtered1).forEach(
-                    ([key, value]) => {      
-                        if (value.decade == "96") {
-                            filtered2.push(value);                            
-                        }
-                    });
-                }
-                if (decsChecked[i] == "1970") {
-                    Object.entries(filtered1).forEach(
-                    ([key, value]) => {      
-                        if (value.decade == "97") {
-                            filtered2.push(value);                            
-                        }
-                    });
-                }
-                if (decsChecked[i] == "1980") {
-                    Object.entries(filtered1).forEach(
-                    ([key, value]) => {      
-                        if (value.decade == "98") {
-                            filtered2.push(value);                            
-                        }
-                    });
-                }
-                if (decsChecked[i] == "1990") {
-                    Object.entries(filtered1).forEach(
-                    ([key, value]) => {      
-                        if (value.decade == "99") {
-                            filtered2.push(value);                            
-                        }
-                    });
-                }
-                if (decsChecked[i] == "unDec") {
-                    Object.entries(filtered1).forEach(
-                    ([key, value]) => {                       
-                        if (value.decade == "") {
-                            filtered2.push(value);                           
-                        }
-                    });
-                } 
+                Object.entries(filtered1).forEach(
+                ([key, value]) => {      
+                    if (value.decade == decsChecked[i]) {
+                        filtered2.push(value);                            
+                    }
+                }); 
             }
 
             return filtered2;
         }
 
 
-
         function narrowByArch() {
             var archsChecked = whatArchitects();
             var filtered1 = [];            
 
-
-            for (var i=0; i<archsChecked.length; i++) {              
-                if (archsChecked[i] == "dow") {
-                    Object.entries(jsonData).forEach(
-                    ([key, value]) => {      
-                        if (value.architect == "Dow") {
-                            filtered1.push(value);                            
-                        }
-                    });
-                }
-                if (archsChecked[i] == "warn") {
-                    Object.entries(jsonData).forEach(
-                    ([key, value]) => {                       
-                        if (value.architect == "Warner") {
-                            filtered1.push(value);                            
-                        }
-                    });
-                    
-                }
-                if (archsChecked[i] == "hall") {
-                    Object.entries(jsonData).forEach(
-                    ([key, value]) => {                       
-                        if (value.architect == "Hallett") {
-                            filtered1.push(value);                            
-                        }
-                    });
-                    
-                }         
-                if (archsChecked[i] == "beach") {
-                    Object.entries(jsonData).forEach(
-                    ([key, value]) => {                       
-                        if (value.architect == "Beach") {
-                            filtered1.push(value);                            
-                        }
-                    });
-                }              
-                if (archsChecked[i] == "schwartz") {
-                    Object.entries(jsonData).forEach(
-                    ([key, value]) => {                       
-                        if (value.architect == "Schwartz") {
-                            filtered1.push(value);                            
-                        }
-                    });
-                }               
-                if (archsChecked[i] == "witz") {
-                    Object.entries(jsonData).forEach(
-                    ([key, value]) => {                       
-                        if (value.architect == "Schulwitz") {
-                            filtered1.push(value);                            
-                        }
-                    });
-                }
-                if (archsChecked[i] == "sblack") {
-                    Object.entries(jsonData).forEach(
-                    ([key, value]) => {                       
-                        if (value.architect == "Schwartz/Blacklock") {
-                            filtered1.push(value);                            
-                        }
-                    });
-                }
-                if (archsChecked[i] == "unArch") {
-                    Object.entries(jsonData).forEach(
-                    ([key, value]) => {                       
-                        if (value.architect == "") {
-                            filtered1.push(value);                           
-                        }
-                    });
-                }
-                if (archsChecked[i] == "good") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Goodall") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "nurmi") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Nurmi") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "cummings") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Cummings") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "allison") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Allison") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "wesolek") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Wesolek") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "goddeyne") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Goddeyne") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "robertson") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Robertson") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "pf") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Perry/Feagley") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "ham") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Hammerschmidt") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "spence") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Spence") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "stone") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Stone") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "boone") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Boone") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "upton") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Upton") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "tilton") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Tilton") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "schwitzer") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Schwitzer") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "alexander") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Alexander") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "freudinger") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Freudinger") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "sweebe") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Sweebe") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "matern") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Matern") { filtered1.push(value); }}); }
-                if (archsChecked[i] == "sb") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Schwartz/Beach") { filtered1.push(value); }}); } 
-                if (archsChecked[i] == "hs") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Hallett/Saro") { filtered1.push(value); }}); } 
-                if (archsChecked[i] == "sv") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Schulwitz/Virgo") { filtered1.push(value); }}); } 
-                if (archsChecked[i] == "gb") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Goodall/Beach") { filtered1.push(value); }}); } 
-                if (archsChecked[i] == "tl") { 
-                    Object.entries(jsonData).forEach( ([key, value]) => { if (value.architect == "Tobocman/Lawerence") { filtered1.push(value); }}); }   
-                                                 
+            for (var i=0; i<archsChecked.length; i++) {                     
+                Object.entries(jsonData).forEach(
+                ([key, value]) => {      
+                    if (value.architect == archsChecked[i]) {
+                        filtered1.push(value);                            
+                    }
+                });                                              
             }
 
             return filtered1;                                  
@@ -384,74 +197,68 @@
         Click the link below to view planned routes representing a great variety of MCM <br> 
         architecture in Midland, or create a custom route. 
     </p>
-    <a href="/planned" target="_blank">View Planned Routes</a>
+    <a href="/planned" target="_blank">View Recommended Routes</a>
     <br>
 
     <div id="one">
-        <form action="javascript:narrowByArch() & narrowByDec() & orderList() & sendArray()"> 
+        <form action="javascript: sendArray()"> 
             <h2>Route by Architect and Decade</h2>
 
-            <p>Mid-Century Modern Architects</p>
+            <b>Mid-Century Modern Architects</b> <br> 
+            <br>
 
             <input type="checkbox" onClick="archToggle(this)"> Any Architect <br>
-            <input type="checkbox" name="archBox" value="dow"> Alden B. Dow <br>    
-            <input type="checkbox" name="archBox" value="warn"> Francis Warner <br>  
-            <input type="checkbox" name="archBox" value="hall"> Jackson Hallett <br> 
-            <input type="checkbox" name="archBox" value="beach"> Glen Beach <br>      
-            <input type="checkbox" name="archBox" value="schwartz"> Robert Schwartz <br>       
-            <input type="checkbox" name="archBox" value="witz"> C.G. Schulwitz <br>
-            <input type="checkbox" name="archBox" value="sblack"> Schwartz and Blacklock <br>
-            <input type="checkbox" name="archBox" value="unArch" style="opacity:0; position:absolute; left:100px">
+            <input type="checkbox" name="archBox" value="Dow"> Alden B. Dow <br>    
+            <input type="checkbox" name="archBox" value="Warner"> Francis Warner <br>  
+            <input type="checkbox" name="archBox" value="Hallett"> Jackson Hallett <br> 
+            <input type="checkbox" name="archBox" value="Beach"> Glen Beach <br>      
+            <input type="checkbox" name="archBox" value="Schwartz"> Robert Schwartz <br>       
+            <input type="checkbox" name="archBox" value="Schulwitz"> C.G. Schulwitz <br>
+            <input type="checkbox" name="archBox" value="Schwartz/Blacklock"> Schwartz and Blacklock <br>
+            <input type="checkbox" name="archBox" value="" style="opacity:0; position:absolute; left:100px">
 
             <i> Additional Architects <br> (3 structures or less per architect) </i> 
             <div onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';" id="scrollbox">
-                <input type="checkbox" name="archBox" value="good"> Robert Goodall <br>
-                <input type="checkbox" name="archBox" value="nurmi"> S.A. Nurmi <br>
-                <input type="checkbox" name="archBox" value="cummings"> Harry Cummings <br>
-                <input type="checkbox" name="archBox" value="allison"> Cle Allison <br>
-                <input type="checkbox" name="archBox" value="wesolek"> Morris E. Wesolek <br>
-                <input type="checkbox" name="archBox" value="goddeyne"> J.C. Goddeyne <br>
-                <input type="checkbox" name="archBox" value="robertson"> James Robertson <br>
-                <input type="checkbox" name="archBox" value="pf"> Perry/Feagley <br>
-                <input type="checkbox" name="archBox" value="ham"> Hammerschmidt <br>
-                <input type="checkbox" name="archBox" value="spence"> James Spence <br>
-                <input type="checkbox" name="archBox" value="stone"> William Stone <br>
-                <input type="checkbox" name="archBox" value="dilloway"> Paul Dilloway <br>
-                <input type="checkbox" name="archBox" value="ebach"> Earl A. Ebach <br>
-                <input type="checkbox" name="archBox" value="boone"> Ralph Boone <br>
-                <input type="checkbox" name="archBox" value="upton"> Harvey Upton <br>
-                <input type="checkbox" name="archBox" value="tilton"> Charles Tilton <br>
-                <input type="checkbox" name="archBox" value="schwitzer"> Dan Schwitzer <br>
-                <input type="checkbox" name="archBox" value="alexander"> Alexander McColl <br>
-                <input type="checkbox" name="archBox" value="freudinger"> Ed Freudinger <br>
-                <input type="checkbox" name="archBox" value="sweebe"> Larry Sweebe <br>
-                <input type="checkbox" name="archBox" value="matern"> R.A. Matern <br>
-                <input type="checkbox" name="archBox" value="sb"> Schwartz/Beach <br>
-                <input type="checkbox" name="archBox" value="hs"> Hallett/Saro <br>
-                <input type="checkbox" name="archBox" value="sv"> Schulwitz/Virgo <br>
-                <input type="checkbox" name="archBox" value="gb"> Goodall/Beach <br>
-                <input type="checkbox" name="archBox" value="tl"> Tobocman/Lawrence <br>
+                <input type="checkbox" name="archBox" value="Schwartz/Beach"> Schwartz/Beach <br>
+                <input type="checkbox" name="archBox" value="Hallett/Saro"> Hallett/Saro <br>
+                <input type="checkbox" name="archBox" value="Goodall"> Robert Goodall <br>
+                <input type="checkbox" name="archBox" value="Allison"> Cle Allison <br>
+                <input type="checkbox" name="archBox" value="Goodall/Beach"> Goodall/Beach <br>
+                <input type="checkbox" name="archBox" value="Schulwitz/Virgo"> Schulwitz/Virgo <br>
+                <input type="checkbox" name="archBox" value="Nurmi"> S.A. Nurmi <br>
+                <input type="checkbox" name="archBox" value="Cummings"> Harry Cummings <br>  
+                <input type="checkbox" name="archBox" value="Wesolek"> Morris E. Wesolek <br>
+                <input type="checkbox" name="archBox" value="Goddeyne"> J.C. Goddeyne <br>
+                <input type="checkbox" name="archBox" value="Robertson"> James Robertson <br>
+                <input type="checkbox" name="archBox" value="Perry/Feagley"> Perry/Feagley <br>
+                <input type="checkbox" name="archBox" value="Hammerschmidt"> Hammerschmidt <br>
+                <input type="checkbox" name="archBox" value="Spence"> James Spence <br>
+                <input type="checkbox" name="archBox" value="Stone"> William Stone <br>
+                <input type="checkbox" name="archBox" value="Dilloway"> Paul Dilloway <br>
+                <input type="checkbox" name="archBox" value="Ebach"> Earl A. Ebach <br>
+                <input type="checkbox" name="archBox" value="Boone"> Ralph Boone <br>
+                <input type="checkbox" name="archBox" value="Upton"> Harvey Upton <br>
+                <input type="checkbox" name="archBox" value="Tilton"> Charles Tilton <br>
+                <input type="checkbox" name="archBox" value="Schwitzer"> Dan Schwitzer <br>
+                <input type="checkbox" name="archBox" value="McColl"> Alexander McColl <br>
+                <input type="checkbox" name="archBox" value="Freudinger"> Ed Freudinger <br>
+                <input type="checkbox" name="archBox" value="Sweebe"> Larry Sweebe <br>
+                <input type="checkbox" name="archBox" value="Matern"> R.A. Matern <br>    
+                <input type="checkbox" name="archBox" value="Tobocman/Lawrence"> Tobocman/Lawrence <br>
             </div>
-            
-            
-            <p>Decade Built</p>        
+            <br>
+            <b>Decade Built</b> <br> 
+            <br>   
 
             <input type="checkbox" onClick="decToggle(this)"> Any Decade <br>
-            <input type="checkbox" name="decBox" value="1930"> 1930's <br>
-            <input type="checkbox" name="decBox" value="1940"> 1940's <br>
-            <input type="checkbox" name="decBox" value="1950"> 1950's <br>
-            <input type="checkbox" name="decBox" value="1960"> 1960's <br>
-            <input type="checkbox" name="decBox" value="1970"> 1970's <br>
-            <input type="checkbox" name="decBox" value="1980"> 1980's <br>
-            <input type="checkbox" name="decBox" value="1990"> 1990's <br>
-            <input type="checkbox" name="decBox" value="unDec" style="opacity:0; position:absolute; left:100px"> 
-            
-            <p>How many structures would you like to visit?</p> 
-            
-            <input type="radio" name="numToRoute" value="10"> 10 <br>
-            <input type="radio" name="numToRoute" value="15"> 15 <br>
-            <input type="radio" name="numToRoute" value="20"> 20 <br>
-            <input type="radio" name="numToRoute" value="25"> 25 <br>        
+            <input type="checkbox" name="decBox" value="93"> 1930's <br>
+            <input type="checkbox" name="decBox" value="94"> 1940's <br>
+            <input type="checkbox" name="decBox" value="95"> 1950's <br>
+            <input type="checkbox" name="decBox" value="96"> 1960's <br>
+            <input type="checkbox" name="decBox" value="97"> 1970's <br>
+            <input type="checkbox" name="decBox" value="98"> 1980's <br>
+            <input type="checkbox" name="decBox" value="99"> 1990's <br>
+            <input type="checkbox" name="decBox" value="" style="opacity:0; position:absolute; left:100px">        
             <br>
 
             <input type="submit" value="Submit">

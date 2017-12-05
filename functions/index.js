@@ -43,7 +43,9 @@ app.get('/custom', (request, response) => {
 
 app.get('/planned', (request, response) => {
     response.set('Cache-Control', 'public, max-age=300, s-maxage=600');
-    response.render('planned');
+    getvalue().then(value => {
+        response.render('planned', { value: JSON.stringify(value) });
+    });
 });
 
 
